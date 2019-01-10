@@ -2,7 +2,7 @@ import { createGlobalStyle } from 'styled-components';
 
 export default createGlobalStyle`
   html {
-    font-size: 16px;
+    font-size: 14px;
   }
   body {
     height: 100vh;
