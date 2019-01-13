@@ -4,8 +4,10 @@ import styled from 'styled-components';
 const RequestStyle = styled.li`
 	background: #00000011;
 	border-radius: .5rem;
-	padding: 1rem;
-	margin-bottom: 1rem;
+	padding: .75rem 1rem;
+	margin-bottom: 4px;
+	overflow-x: auto;
+	white-space: nowrap;
 `;
 
 const Request = ({ id, title }) => {

@@ -7,6 +7,8 @@ const HeaderStyle = styled.header`
   color: white;
   font-size: 1rem;
   font-weight: bold;
+  flex-grow: 0;
+  flex-shrink: 0;
 `;
 
 const Header = () => (

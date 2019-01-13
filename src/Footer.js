@@ -2,13 +2,16 @@ import React from 'react';
 import styled from 'styled-components';
 import MusicIcon from './MusicIcon';
 import withFirebase from './withFirebase';
+import SongPicker from './SongPicker';
+import search from './search';
 
 const FooterStyle = styled.footer`
   background: #cfd8dc;
   padding: .5rem;
+  flex-shrink: 0;
   display: flex;
   flex-wrap: wrap;
-  div {
+  .Footer-bottom {
     margin: .5rem;
     display: flex;
     flex-grow: 8;
@@ -25,13 +28,18 @@ const FooterStyle = styled.footer`
   }
   input {
     flex-grow: 1;
+    margin: 0; /* iOS */
     border: 0;
     padding: 1rem;
     padding-left: 0;
     font-size: 1.25rem;
+    border-radius: 0;
     border-top-right-radius: .5rem;
     border-bottom-right-radius: .5rem;
     flex-grow: 1;
+    &:focus {
+      outline: 0;
+    }
   }
   button {
     padding: 1rem 2rem;
@@ -48,30 +56,44 @@ const FooterStyle = styled.footer`
 
 class Footer extends React.Component {
   state = {
-    song: ''
+    song: '',
+    searchResults: null
   };
 
-  requestSong = () => {
+  search = () => {
+    search(this.state.song).then(searchResults => {
+      this.setState({ searchResults });
+    });
+  }
+
+  requestSong = ({ name, artist }) => {
     const { firebase: { requests, timestamp }} = this.props;
 
     requests()
       .push({
-        title: this.state.song,
+        title: `${name} - ${artist}`,
         timestamp
       })
-      .then(ref => {
-        this.setState({ song: '' });
+      .then(() => {
+        this.setState({
+          song: '',
+          searchResults: null
+        });
       });
   }
 
   handleChange = e => {
-    this.setState({ song: e.target.value });
+    this.setState({
+      song: e.target.value,
+      searchResults: null
+    });
   }
 
   render() {
     return (
       <FooterStyle>
-        <div>
+        <SongPicker searchResults={this.state.searchResults} onClick={this.requestSong}/>
+        <div className="Footer-bottom">
           <span>
             <MusicIcon />
           </span>
@@ -80,9 +102,10 @@ class Footer extends React.Component {
             placeholder="What song would you like to hear?"
             value={this.state.song}
             onChange={this.handleChange}
+            onKeyDown={({ key }) => {if (key === 'Enter') this.search()}}
           />
         </div>
-        <button type="button" onClick={this.requestSong}>REQUEST SONG</button>
+        <button type="button" onClick={this.search}>REQUEST SONG</button>
       </FooterStyle>
     )
   }

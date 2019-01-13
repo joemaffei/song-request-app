@@ -7,6 +7,7 @@ import Request from './Request';
 const MainStyle = styled.main`
   flex-grow: 1;
   padding: 1rem;
+  overflow-y: auto;
   ul {
     list-style-type: none;
     padding: 0;
