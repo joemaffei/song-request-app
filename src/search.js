@@ -1,4 +1,4 @@
-const baseUrl = 'http://ws.audioscrobbler.com/2.0/';
+const baseUrl = 'https://ws.audioscrobbler.com/2.0/';
 
 function lastFmApiUrl(paramsObject) {
 	const searchParams = new URLSearchParams();
